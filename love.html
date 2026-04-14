@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy 1 Year Anniversary ❤️</title>
+
+<style>
+    * {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Brush Script MT', cursive;
+    background: linear-gradient(135deg, #FF5CFF, #6a0dad);
+    color: white;
+
+    /* allow scrolling on small devices */
+    overflow-x: hidden;
+}
+
+/* CENTER CONTAINER */
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 100vh; /* better than height */
+    padding: 20px;
+
+    flex-direction: column;
+    text-align: center;
+}
+
+/* INPUT */
+input {
+    padding: 12px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+
+    width: min(90%, 300px);
+
+    font-size: clamp(14px, 2.5vw, 20px);
+    text-align: center;
+}
+
+/* BUTTON */
+button {
+    margin-top: 15px;
+    padding: 10px 25px;
+    border-radius: 20px;
+    border: none;
+
+    background: white;
+    color: #FF5CFF;
+
+    font-size: clamp(14px, 2.5vw, 20px);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+/* TEXT */
+h1 {
+    font-size: clamp(26px, 6vw, 60px);
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: clamp(16px, 3vw, 22px);
+}
+
+/* POEM */
+.poem {
+    font-size: clamp(18px, 4vw, 48px);
+    width: min(95%, 800px);
+    line-height: 1.8;
+    word-wrap: break-word;
+}
+
+/* ANIMATIONS */
+.fade {
+    animation: fadeIn 2s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px);} 
+    to { opacity: 1; transform: translateY(0);} 
+}
+
+/* REFLECTION */
+.reflect {
+    -webkit-box-reflect: below 5px linear-gradient(transparent, rgba(0,0,0,0.3));
+}
+
+/* 📱 EXTRA MOBILE FIX */
+@media (max-width: 480px) {
+    .center {
+        padding: 15px;
+    }
+
+    button {
+        width: 100%;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="login" class="center">
+    <h1>💜 Our 1 Year Anniversary 💜</h1>
+    <p>Enter our special password</p>
+    <input type="password" id="password" placeholder="Enter password">
+    <button onclick="checkPassword()">Unlock</button>
+</div>
+
+<div id="main" class="center hidden">
+    <div id="poem" class="poem"></div>
+    <button id="nextBtn" class="hidden" onclick="nextPage()">Next 💜</button>
+</div>
+
+<div id="page2" class="center hidden">
+    <h1 class="fade">✨ You Mean Everything To Me ✨</h1>
+    <p class="fade">Thank you for being part of my life. Every moment with you is magic 💜</p>
+    <p class="fade">I can't wait for more memories, laughter, and love together.</p>
+</div>
+
+<script>
+    const correctPassword = "love123"; // change this
+
+    function checkPassword() {
+        const input = document.getElementById("password").value;
+        if(input === correctPassword){
+            document.getElementById("login").classList.add("hidden");
+            document.getElementById("main").classList.remove("hidden");
+            startPoem();
+        } else {
+            alert("Wrong password 💔");
+        }
+    }
+
+    const text = `
+From the moment you walked into my life,
+Everything changed in the most beautiful way.
+
+One year with you feels like a dream,
+A story I never want to end.
+
+Your smile, your laugh, your love,
+They are my favorite parts of every day.
+
+I choose you today,
+Tomorrow,
+And forever 💜
+`;
+
+    let index = 0;
+
+    function startPoem(){
+        const poemDiv = document.getElementById("poem");
+        poemDiv.innerHTML = "";
+
+        function type(){
+            if(index < text.length){
+                poemDiv.innerHTML += text.charAt(index);
+                index++;
+                setTimeout(type, 40);
+            } else {
+                poemDiv.classList.add("reflect");
+                document.getElementById("nextBtn").classList.remove("hidden");
+            }
+        }
+
+        type();
+    }
+
+    function nextPage(){
+        document.getElementById("main").classList.add("hidden");
+        document.getElementById("page2").classList.remove("hidden");
+    }
+</script>
+
+</body>
+</html>
