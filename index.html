@@ -6,8 +6,9 @@
 <title>Happy 1 Year Anniversary ❤️</title>
 
 <style>
-    * {
+* {
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -16,21 +17,56 @@ body {
     background: linear-gradient(135deg, #FF5CFF, #6a0dad);
     color: white;
 
-    /* allow scrolling on small devices */
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
-/* CENTER CONTAINER */
-.center {
+/* FLOATING BACKGROUND GLOW */
+body::before {
+    content: "";
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 50%;
+    top: 10%;
+    left: 10%;
+    filter: blur(80px);
+    animation: floatGlow 6s infinite alternate;
+}
+
+@keyframes floatGlow {
+    from { transform: translateY(0px); }
+    to { transform: translateY(50px); }
+}
+
+/* SLIDER */
+.container {
+    display: flex;
+    width: 300%;
+    height: 100vh;
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.page {
+    width: 100vw;
+    height: 100vh;
+
     display: flex;
     justify-content: center;
     align-items: center;
-
-    min-height: 100vh; /* better than height */
-    padding: 20px;
-
     flex-direction: column;
+
     text-align: center;
+    padding: 20px;
+}
+
+/* TEXT */
+h1 {
+    font-size: clamp(26px, 6vw, 60px);
+}
+
+p {
+    font-size: clamp(16px, 3vw, 22px);
 }
 
 /* INPUT */
@@ -40,8 +76,7 @@ input {
     border: none;
     outline: none;
 
-    width: min(90%, 300px);
-
+    width: min(90%, 320px);
     font-size: clamp(14px, 2.5vw, 20px);
     text-align: center;
 }
@@ -58,32 +93,24 @@ button {
 
     font-size: clamp(14px, 2.5vw, 20px);
     cursor: pointer;
+
     transition: 0.3s;
 }
 
 button:hover {
-    transform: scale(1.05);
-}
-
-/* TEXT */
-h1 {
-    font-size: clamp(26px, 6vw, 60px);
-    margin-bottom: 10px;
-}
-
-p {
-    font-size: clamp(16px, 3vw, 22px);
+    transform: scale(1.08);
 }
 
 /* POEM */
 .poem {
     font-size: clamp(18px, 4vw, 48px);
-    width: min(95%, 800px);
+    width: min(95%, 850px);
     line-height: 1.8;
-    word-wrap: break-word;
+
+    min-height: 200px;
 }
 
-/* ANIMATIONS */
+/* ANIMATION */
 .fade {
     animation: fadeIn 2s ease-in-out;
 }
@@ -93,15 +120,14 @@ p {
     to { opacity: 1; transform: translateY(0);} 
 }
 
-/* REFLECTION */
 .reflect {
     -webkit-box-reflect: below 5px linear-gradient(transparent, rgba(0,0,0,0.3));
 }
 
-/* 📱 EXTRA MOBILE FIX */
-@media (max-width: 480px) {
-    .center {
-        padding: 15px;
+/* MOBILE FIX */
+@media (max-width: 600px) {
+    body {
+        overflow-x: hidden;
     }
 
     button {
@@ -114,39 +140,57 @@ p {
 
 <body>
 
-<div id="login" class="center">
-    <h1>💜 Our 1 Year Anniversary 💜</h1>
-    <p>Enter our special password</p>
-    <input type="password" id="password" placeholder="Enter password">
-    <button onclick="checkPassword()">Unlock</button>
-</div>
+<div class="container" id="container">
 
-<div id="main" class="center hidden">
-    <div id="poem" class="poem"></div>
-    <button id="nextBtn" class="hidden" onclick="nextPage()">Next 💜</button>
-</div>
+    <!-- PAGE 1 -->
+    <section class="page">
+        <h1>💜 Our 1 Year Anniversary 💜</h1>
+        <p>Enter our special password</p>
+        <input type="password" id="password" placeholder="Enter password">
+        <button onclick="checkPassword()">Unlock</button>
+    </section>
 
-<div id="page2" class="center hidden">
-    <h1 class="fade">✨ You Mean Everything To Me ✨</h1>
-    <p class="fade">Thank you for being part of my life. Every moment with you is magic 💜</p>
-    <p class="fade">I can't wait for more memories, laughter, and love together.</p>
+    <!-- PAGE 2 -->
+    <section class="page">
+        <div id="poem" class="poem"></div>
+        <button id="nextBtn" style="display:none" onclick="nextPage()">Next 💜</button>
+    </section>
+
+    <!-- PAGE 3 -->
+    <section class="page">
+        <h1 class="fade">✨ You Mean Everything To Me ✨</h1>
+        <p class="fade">Thank you for being part of my life 💜</p>
+        <p class="fade">Every moment with you is magic.</p>
+        <p class="fade">Happy One Year Anniversary my Love 💜</p>
+    </section>
+
 </div>
 
 <script>
-    const correctPassword = "kenold"; // change this
+const container = document.getElementById("container");
 
-    function checkPassword() {
-        const input = document.getElementById("password").value;
-        if(input === correctPassword){
-            document.getElementById("login").classList.add("hidden");
-            document.getElementById("main").classList.remove("hidden");
-            startPoem();
-        } else {
-            alert("Wrong password 💔");
-        }
+let index = 0;
+let currentPage = 0;
+
+function goToPage(page) {
+    currentPage = page;
+    container.style.transform = `translateX(-${page * 100}vw)`;
+}
+
+/* PASSWORD */
+function checkPassword() {
+    const input = document.getElementById("password").value;
+
+    if (input === "kenold") {
+        goToPage(1);
+        startPoem();
+    } else {
+        alert("Wrong password 💔");
     }
+}
 
-    const text = `
+/* POEM */
+const text = `
 From the moment you walked into my life,
 Everything changed in the most beautiful way.
 
@@ -161,30 +205,48 @@ Tomorrow,
 And forever 💜
 `;
 
-    let index = 0;
+function startPoem() {
+    const poemDiv = document.getElementById("poem");
+    poemDiv.innerHTML = "";
+    index = 0;
 
-    function startPoem(){
-        const poemDiv = document.getElementById("poem");
-        poemDiv.innerHTML = "";
-
-        function type(){
-            if(index < text.length){
-                poemDiv.innerHTML += text.charAt(index);
-                index++;
-                setTimeout(type, 40);
-            } else {
-                poemDiv.classList.add("reflect");
-                document.getElementById("nextBtn").classList.remove("hidden");
-            }
+    function type() {
+        if (index < text.length) {
+            poemDiv.innerHTML += text.charAt(index);
+            index++;
+            setTimeout(type, 35);
+        } else {
+            poemDiv.classList.add("reflect");
+            document.getElementById("nextBtn").style.display = "block";
         }
-
-        type();
     }
 
-    function nextPage(){
-        document.getElementById("main").classList.add("hidden");
-        document.getElementById("page2").classList.remove("hidden");
+    type();
+}
+
+function nextPage() {
+    goToPage(2);
+}
+
+/* OPTIONAL: swipe support for mobile */
+let startX = 0;
+
+document.addEventListener("touchstart", e => {
+    startX = e.touches[0].clientX;
+});
+
+document.addEventListener("touchend", e => {
+    let endX = e.changedTouches[0].clientX;
+
+    if (startX - endX > 50) {
+        if (currentPage < 2) goToPage(currentPage + 1);
     }
+
+    if (endX - startX > 50) {
+        if (currentPage > 0) goToPage(currentPage - 1);
+    }
+});
+
 </script>
 
 </body>
